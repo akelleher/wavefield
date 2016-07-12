@@ -1,21 +1,44 @@
 freq = 1000;
 angfreq = 2*pi*freq;
-spaceX = 1000; % 5mm increments for x and y
-spaceY = 500;
-emitters = [0, 500; 0,510; 0, 490; 0, 520; 0, 530; 0, 480; 0, 470; 0, 460; 0, 450; 0, 440; 0, 540; 0, 550; 0, 560];
-numEmitters = 13;
+spaceX = 10000; % 5mm increments for x and y
+spaceY = 5000;
+numEmitters = 2;
+emitterCenterX = 5000;
+emitterCenterY = 0; % not yet supported
+offsetX = 25;
+offsetY = 0;
+phaseOffset = 0; % between each emitter
+phaseConstant = pi/2; %shift applied to each emitter identically
+speedOfSound = 340.3; % meters/s
+
+
+emitters = zeros(numEmitters, 3);
 space = zeros(spaceY, spaceX);
+%emitter generation
+firstEmitterX = emitterCenterX-(numEmitters-1)*offsetX/2;
+firstEmitterPhase = -(numEmitters-1)*phaseOffset/2;
+
+for n = 1:numEmitters
+    emitters(n,2) = firstEmitterX + (n-1)*offsetX;
+    emitters(n,3) = abs(firstEmitterPhase + (n-1)*phaseOffset) + phaseConstant
+    
+end
+
+
+
+
 tic
 for n = 1:numEmitters
-    for x = 1:spaceX
+    parfor x = 1:spaceX
         for y = 1:spaceY
            dX = x-emitters(n,2);
            dY = y-emitters(n,1);
            dist = sqrt(dX^2 + dY^2);
-           space(y,x) = space(y,x) + sin(angfreq*dist);
+           space(y,x) = space(y,x) + sin(angfreq*dist/(speedOfSound*100) + emitters(n,3));
         end
     end
 end
 toc
+
 pcolor(space)
 shading interp
