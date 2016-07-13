@@ -2,7 +2,7 @@ freq = 1000;
 angfreq = 2*pi*freq;
 spaceX = 10000; % 5mm increments for x and y
 spaceY = 5000;
-numEmitters = 2;
+numEmitters = 8;
 emitterCenterX = 5000;
 emitterCenterY = 0; % not yet supported
 offsetX = 25;
@@ -20,16 +20,21 @@ firstEmitterPhase = -(numEmitters-1)*phaseOffset/2;
 
 for n = 1:numEmitters
     emitters(n,2) = firstEmitterX + (n-1)*offsetX;
-    emitters(n,3) = abs(firstEmitterPhase + (n-1)*phaseOffset) + phaseConstant
+    emitters(n,3) = abs(firstEmitterPhase + (n-1)*phaseOffset) + phaseConstant;
     
 end
 
-
-
-
+[X,Y] = meshgrid(1:spaceX, 1:spaceY);
 tic
 for n = 1:numEmitters
-    parfor x = 1:spaceX
+    distances = hypot(X-emitters(n,2), Y-emitters(n,1));
+    space = space + sin((angfreq*distances/(speedOfSound*100)) + emitters(n,3));
+end
+toc
+%{
+tic
+for n = 1:numEmitters
+    for x = 1:spaceX
         for y = 1:spaceY
            dX = x-emitters(n,2);
            dY = y-emitters(n,1);
@@ -39,6 +44,7 @@ for n = 1:numEmitters
     end
 end
 toc
+%}
 
 pcolor(space)
 shading interp
