@@ -1,15 +1,16 @@
-freq = 1000;
+freq = 400;
 angfreq = 2*pi*freq;
 spaceX = 10000; % 5mm increments for x and y
 spaceY = 5000;
-numEmitters = 8;
+numEmitters = 10;
 emitterCenterX = 5000;
 emitterCenterY = 0; % not yet supported
-offsetX = 25;
-offsetY = 0;
-phaseOffset = 0; % between each emitter
-phaseConstant = pi/2; %shift applied to each emitter identically
 speedOfSound = 340.3; % meters/s
+wavelength = speedOfSound/freq
+offsetX = 25; %mm
+offsetY = 0;
+theta = pi/2; %radians
+phaseOffset = 2*pi*(offsetX/1000)*sin(theta)/wavelength; % between each emitter
 
 
 emitters = zeros(numEmitters, 3);
@@ -20,31 +21,20 @@ firstEmitterPhase = -(numEmitters-1)*phaseOffset/2;
 
 for n = 1:numEmitters
     emitters(n,2) = firstEmitterX + (n-1)*offsetX;
-    emitters(n,3) = abs(firstEmitterPhase + (n-1)*phaseOffset) + phaseConstant;
+    emitters(n,3) = (n-1)*phaseOffset;
     
 end
 
 [X,Y] = meshgrid(1:spaceX, 1:spaceY);
-tic
+
 for n = 1:numEmitters
+    tic
     distances = hypot(X-emitters(n,2), Y-emitters(n,1));
-    space = space + sin((angfreq*distances/(speedOfSound*100)) + emitters(n,3));
+    toc
+    tic
+    space = space + sin((angfreq*gather(distances)/(speedOfSound*100)) + emitters(n,3));
+    toc
 end
-toc
-%{
-tic
-for n = 1:numEmitters
-    for x = 1:spaceX
-        for y = 1:spaceY
-           dX = x-emitters(n,2);
-           dY = y-emitters(n,1);
-           dist = sqrt(dX^2 + dY^2);
-           space(y,x) = space(y,x) + sin(angfreq*dist/(speedOfSound*100) + emitters(n,3));
-        end
-    end
-end
-toc
-%}
 
 pcolor(space)
 shading interp
