@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2013
+Project("{65CFE356-6017-8306-CB22-0A063F50D855}") = "ProcessingAudioInputTutorial", "ProcessingAudioInputTutorial.vcxproj", "{FD7CF358-DA1D-2C64-AD99-53D8FB8764ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD7CF358-DA1D-2C64-AD99-53D8FB8764ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD7CF358-DA1D-2C64-AD99-53D8FB8764ED}.Debug|Win32.Build.0 = Debug|Win32
+		{FD7CF358-DA1D-2C64-AD99-53D8FB8764ED}.Release|Win32.ActiveCfg = Release|Win32
+		{FD7CF358-DA1D-2C64-AD99-53D8FB8764ED}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
