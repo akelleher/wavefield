@@ -107,3 +107,4 @@ profile
 **/doxygen/build
 extras/Projucer/JUCECompileEngine.dylib
 *.jucer
+wavefieldCalculator/out

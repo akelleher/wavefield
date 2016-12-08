@@ -59,3 +59,21 @@ std::vector<float> getWavefieldGains(float sourceX,float sourceY, int speakerCou
 float pythagorean(float x1, float y1, float x2, float y2){
 	return sqrt(pow(x1-x2, 2)+pow(y1-y2, 2));
 }
+
+void computeSincTable(std::vector<float> * table, int sampleRate, int tableSize, int upscaleFactor) {
+	table->clear();
+	for (int i = -tableSize/2; i < tableSize/2; i++) {
+		
+		table->push_back(sinc((float)i/upscaleFactor));
+		std::cout << sinc((float)i/upscaleFactor) << " \n";
+	}
+}
+
+float sinc(float x) {
+	if (x == 0.0) {
+		return 1.0;
+	}
+	double pi = 3.14159265359;
+	double y = pi*x;
+	return (sin(y) / y);
+}
